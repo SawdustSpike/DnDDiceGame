@@ -153,24 +153,7 @@ namespace WpfApp1
             }
             clicked = false;
         }
-        void check_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        void raise_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-        void call_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        void fold_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         public string ShowDialog()
         {

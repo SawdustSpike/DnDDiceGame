@@ -18,5 +18,6 @@ namespace WpfApp1
         public string Score { get; set; }
         public int[] Dice { get; set; }
         public int Gold { get; set; }
+        public int CurrentBid { get; set; }
     }
 }

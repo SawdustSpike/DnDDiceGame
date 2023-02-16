@@ -37,6 +37,7 @@ namespace WpfApp1
         Button fold = new Button();
         bool canCheck = true;
         bool inputreset = false;
+        bool folded = false;
 
         public BetBox(string content)
         {
@@ -174,27 +175,54 @@ namespace WpfApp1
        
         void check_Click(object sender, RoutedEventArgs e)
         {
+            clicked = true;
+            input.Text = "0";
+            Box.Close();
+            GameController.rotate++;
 
+            clicked = false;
         }
 
         void raise_Click(object sender, RoutedEventArgs e)
         {
-
+            GameController.rotate = 1;
+            canCheck= false;
+            clicked = true;
+            if (input.Text == defaulttext || input.Text == "")
+                MessageBox.Show(errormessage, errortitle);
+            else
+            {
+                Box.Close();
+            }
+            clicked = false;
         }
         void call_Click(object sender, RoutedEventArgs e)
         {
-
+            GameController.rotate++;
+            clicked = true;
+            if (input.Text == defaulttext || input.Text == "")
+                MessageBox.Show(errormessage, errortitle);
+            else
+            {
+                Box.Close();
+            }
+            clicked = false;
         }
 
         void fold_Click(object sender, RoutedEventArgs e)
         {
-
+            clicked = true;
+            input.Text = "0";
+            Box.Close();
+            
+            clicked = false;
         }
 
-        public string ShowDialog()
+        public string ShowDialog(Player player)
         {
+            if (folded) { Player.players.Remove(player); }
             Box.ShowDialog();
             return input.Text;
-        }
+        }       
     }
 }

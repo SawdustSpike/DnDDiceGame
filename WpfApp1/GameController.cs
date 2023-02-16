@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Documents;
 
 namespace WpfApp1
@@ -12,6 +14,28 @@ namespace WpfApp1
         public static bool startReady = false;
         public static int pot = 0;
         public static int bet = 0;
+        public static int rotate = 1;
+
+        public static void StartBetting() 
+        {
+            int co = 0;
+            int bid = 0;
+            while (rotate != Player.players.Count)
+            {                
+                bid = BetGetter(Player.players[co]);
+                
+                if(bid> 0)
+                {
+                    pot += bid;
+                    Player.players[co].CurrentBid += bid;
+                    Player.players[co].Gold -= bid;
+                    if(Player.players[co].CurrentBid> bet) { bet = Player.players[co].CurrentBid; }
+                }
+                co++;
+                if (co == Player.players.Count) { co = 0; }
+
+            }
+        }
         public static void IndividualRoll()
         {
             
@@ -28,20 +52,34 @@ namespace WpfApp1
             }            
         }
 
-        public static void PopulateTable()
-        {
-            foreach(Player player in Player.players)
-            {
-                switch(player.Number) 
-                {
-                    case 1:
+        //public static void PopulateTable()
+        //{
+        //    foreach(Player player in Player.players)
+        //    {
+        //        switch(player.Number) 
+        //        {
+        //            case 1:
                   
-                        break;
+        //                break;
                             
+        //        }
+        //    }
+        //}
+        public static int BetGetter(Player player)
+        {
+            bool gotint = false;
+            int gold = 0;
+            while (!gotint)
+            {
+                gotint = int.TryParse( new BetBox($"{player.Name}, action is on you. What do you wish to do?").ShowDialog(player), out gold);
+                if(gold> player.Gold)
+                {
+                    MessageBox.Show("You can only bet what you have, Try Again");
+                    gotint= false;
                 }
             }
-        } 
-
+            return gold;
+        }
         public static int GoldGetter()
         {
             bool gotint = false;

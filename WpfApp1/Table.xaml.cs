@@ -60,12 +60,22 @@ namespace WpfApp1
         }
         private void GameStart(object sender, RoutedEventArgs e)
         {
-            var bet =new BetBox("Enter your starting bet").ShowDialog();
+            GameController.StartBetting();
+            if (Player.players.Count == 1) 
+            { 
+                WinnerFold(Player.players[0]); 
+            }
         }
         private void UpdatePot()
         {
             CenterBox.Visibility = Visibility.Visible;
             CenterBox.Text = $"Pot Currently at {GameController.pot} Gold";
+        }
+
+        private void WinnerFold(Player player)
+        {
+            player.Gold += GameController.pot;
+            MessageBox.Show($"All Player but {player.Name} have folded. {player.Name} wins {GameController.pot} and now has {player.Gold}. Congratulations!!");
         }
     }
 }
