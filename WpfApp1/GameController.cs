@@ -18,7 +18,7 @@ namespace WpfApp1
         public static int rotate = 0;
         public static bool canCheck = true;
         public static bool flop = false;
-        public static List<int> commDice;
+        public static List<int> commDice = new List<int>();
 
         public static void StartBetting() 
         {
@@ -28,7 +28,7 @@ namespace WpfApp1
             while (rotate != Player.players.Count)
             {                
                 bid = BetGetter(Player.players[co]);
-                
+                bet = bid;
                 if(bid> 0)
                 {
                     int current = bid - Player.players[co].CurrentBid;
@@ -42,6 +42,7 @@ namespace WpfApp1
                 if (Player.players.Count == 1) break;
 
             }
+            ResetBets();
         }
         public static void Folded(Player player)
         {
@@ -52,8 +53,19 @@ namespace WpfApp1
                 case 3: PlayerController.p3 = false; break;
                 case 4: PlayerController.p4 = false; break;
             }
+            Player.foldedPlayers.Add(player);
             Player.players.Remove(player);
         }
+
+        public static void ResetBets()
+        {
+            rotate = 0;
+            bet = 0;
+            foreach (Player player in Player.players)
+            {
+                player.CurrentBid = 0;
+            }
+        } 
         public static void IndividualRoll()
         {
             
@@ -115,6 +127,9 @@ namespace WpfApp1
             int j = rnd.Next(1, 7);
             int k = rnd.Next(1, 7);
             int l = rnd.Next(1, 7);
+            commDice.Add(j);
+            commDice.Add(k);
+            commDice.Add(l);
             for (int i = 0; i < Player.players.Count; i++)
             {
                 Player.players[i].Dice[2] = j;
@@ -128,6 +143,7 @@ namespace WpfApp1
         {
             Random rnd = new Random();
             int j = rnd.Next(1, 7);
+            commDice.Add(j);
 
             for (int i = 0; i < Player.players.Count; i++)
             {
@@ -139,6 +155,7 @@ namespace WpfApp1
         {
             Random rnd = new Random();
             int j = rnd.Next(1, 7);
+            commDice.Add(j);
 
             for (int i = 0; i < Player.players.Count; i++)
             {
@@ -146,150 +163,152 @@ namespace WpfApp1
             }
             
         }
-        public static void DisplayFirstRolls(List<int[]> x)
-        {
-            for (int i = 0; i < x.Count; i++)
-            {
-                Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
-                Console.ReadLine();
-                Console.WriteLine($"You Rolled a {x[i][0]} {x[i][1]}");
-                Console.WriteLine();
-            }
-        }
-        public static void DisplayFlop(List<int[]> x)
-        {
-            Console.WriteLine($"Three Shared dice were rolled. Twas a {x[0][2]} {x[0][3]} {x[0][4]}");
-            Console.WriteLine("Would you like to review your individual dice? Please Type Yes or No.");
-            var a = Console.ReadLine();
-            if (a.ToLower() == "yes")
-            {
-                for (int i = 0; i < x.Count; i++)
-                {
-                    Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
-                    Console.ReadLine();
-                    Console.WriteLine($"You have a {x[i][0]} {x[i][1]} {x[i][2]} {x[i][3]} {x[i][4]}");
-                    Console.WriteLine();
-                }
-            }
-        }
-        public static void DisplayTurn(List<int[]> x)
-        {
-            Console.WriteLine($"One more die was rolled. The table now shows {x[0][5]} {x[0][2]} {x[0][3]} {x[0][4]}");
-            Console.WriteLine("Would you like to review your individual dice? Please Type Yes or No.");
-            var a = Console.ReadLine();
-            if (a.ToLower() == "yes")
-            {
-                for (int i = 0; i < x.Count; i++)
-                {
-                    Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
-                    Console.ReadLine();
-                    Console.WriteLine($"You have a {x[i][0]} {x[i][1]} {x[i][2]} {x[i][3]} {x[i][4]} {x[0][5]}");
-                    Console.WriteLine();
-                }
-            }
-        }
-        public static void DisplayRiver(List<int[]> x)
-        {
-            Console.WriteLine($"One more die was rolled. The table now shows {x[0][6]} {x[0][5]} {x[0][2]} {x[0][3]} {x[0][4]}");
-            Console.WriteLine("Would you like to review your individual dice? Please Type Yes or No.");
-            var a = Console.ReadLine();
-            if (a.ToLower() == "yes")
-            {
-                for (int i = 0; i < x.Count; i++)
-                {
-                    Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
-                    Console.ReadLine();
-                    Console.WriteLine($"You have a {x[i][0]} {x[i][1]} {x[i][2]} {x[i][3]} {x[i][4]} {x[0][5]} {x[0][6]}");
-                    Console.WriteLine();
-                }
-            }
-        }
-        public static string ScoreDice(int[] d)
-        {
-            if (d.Contains(2) && d.Contains(3) && d.Contains(4) && d.Contains(5))
-            {
-                if (d.Contains(1) || d.Contains(6))
-                {
-                    return "3Straight";
-                }
-            }
-            var scores = new List<string>();
-            var res = new Dictionary<int, int>();
-            for (int i = 0; i < 5; i++)
-            {
-                if (res.ContainsKey(d[i]))
-                {
-                    res[d[i]]++;
-                    if (res[d[i]] == 2)
-                    {
-                        if (scores.Contains("7Pair"))
-                        {
-                            scores.Remove("7Pair");
-                            scores.Add("6Two Pair");
-                        }
-                        else scores.Add("7Pair");
-                    }
-                    if (res[d[i]] == 3)
-                    {
-                        if (scores.Contains("6Two Pair"))
-                        {
-                            scores.Remove("6Two Pair");
-                            scores.Add("4Full House");
-                        }
-                        else
-                        {
-                            scores.Remove("7Pair");
-                            scores.Add("5Three Of A Kind");
-                        }
+        //public static void DisplayFirstRolls(List<int[]> x)
+        //{
+        //    for (int i = 0; i < x.Count; i++)
+        //    {
+        //        Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
+        //        Console.ReadLine();
+        //        Console.WriteLine($"You Rolled a {x[i][0]} {x[i][1]}");
+        //        Console.WriteLine();
+        //    }
+        //}
+        //public static void DisplayFlop(List<int[]> x)
+        //{
+        //    Console.WriteLine($"Three Shared dice were rolled. Twas a {x[0][2]} {x[0][3]} {x[0][4]}");
+        //    Console.WriteLine("Would you like to review your individual dice? Please Type Yes or No.");
+        //    var a = Console.ReadLine();
+        //    if (a.ToLower() == "yes")
+        //    {
+        //        for (int i = 0; i < x.Count; i++)
+        //        {
+        //            Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
+        //            Console.ReadLine();
+        //            Console.WriteLine($"You have a {x[i][0]} {x[i][1]} {x[i][2]} {x[i][3]} {x[i][4]}");
+        //            Console.WriteLine();
+        //        }
+        //    }
+        //}
+        //public static void DisplayTurn(List<int[]> x)
+        //{
+        //    Console.WriteLine($"One more die was rolled. The table now shows {x[0][5]} {x[0][2]} {x[0][3]} {x[0][4]}");
+        //    Console.WriteLine("Would you like to review your individual dice? Please Type Yes or No.");
+        //    var a = Console.ReadLine();
+        //    if (a.ToLower() == "yes")
+        //    {
+        //        for (int i = 0; i < x.Count; i++)
+        //        {
+        //            Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
+        //            Console.ReadLine();
+        //            Console.WriteLine($"You have a {x[i][0]} {x[i][1]} {x[i][2]} {x[i][3]} {x[i][4]} {x[0][5]}");
+        //            Console.WriteLine();
+        //        }
+        //    }
+        //}
+        //public static void DisplayRiver(List<int[]> x)
+        //{
+        //    Console.WriteLine($"One more die was rolled. The table now shows {x[0][6]} {x[0][5]} {x[0][2]} {x[0][3]} {x[0][4]}");
+        //    Console.WriteLine("Would you like to review your individual dice? Please Type Yes or No.");
+        //    var a = Console.ReadLine();
+        //    if (a.ToLower() == "yes")
+        //    {
+        //        for (int i = 0; i < x.Count; i++)
+        //        {
+        //            Console.WriteLine($"Player {i + 1}, Hit Enter To See Your Dice.");
+        //            Console.ReadLine();
+        //            Console.WriteLine($"You have a {x[i][0]} {x[i][1]} {x[i][2]} {x[i][3]} {x[i][4]} {x[0][5]} {x[0][6]}");
+        //            Console.WriteLine();
+        //        }
+        //    }
+        //}
+        //public static string ScoreDice(int[] d)
+        //{
+        //    if (d.Contains(2) && d.Contains(3) && d.Contains(4) && d.Contains(5))
+        //    {
+        //        if (d.Contains(1) || d.Contains(6))
+        //        {
+        //            return "3Straight";
+        //        }
+        //    }
+        //    var scores = new List<string>();
+        //    var res = new Dictionary<int, int>();
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        if (res.ContainsKey(d[i]))
+        //        {
+        //            res[d[i]]++;
+        //            if (res[d[i]] == 2)
+        //            {
+        //                if (scores.Contains("7Pair"))
+        //                {
+        //                    scores.Remove("7Pair");
+        //                    scores.Add("6Two Pair");
+        //                }
+        //                else scores.Add("7Pair");
+        //            }
+        //            if (res[d[i]] == 3)
+        //            {
+        //                if (scores.Contains("6Two Pair"))
+        //                {
+        //                    scores.Remove("6Two Pair");
+        //                    scores.Add("4Full House");
+        //                }
+        //                else
+        //                {
+        //                    scores.Remove("7Pair");
+        //                    scores.Add("5Three Of A Kind");
+        //                }
 
-                    }
-                    if (res[d[i]] == 4)
-                    {
-                        if (scores.Contains("4Full House")) scores.Remove("4Full House");
-                        else scores.Remove("5Three Of A Kind");
+        //            }
+        //            if (res[d[i]] == 4)
+        //            {
+        //                if (scores.Contains("4Full House")) scores.Remove("4Full House");
+        //                else scores.Remove("5Three Of A Kind");
 
-                        scores.Add("2Four Of A Kind");
-                    }
-                    if (res[d[i]] == 5)
-                    {
-                        return "1Five Of A Kind";
+        //                scores.Add("2Four Of A Kind");
+        //            }
+        //            if (res[d[i]] == 5)
+        //            {
+        //                return "1Five Of A Kind";
 
-                    }
-                }
-                else
-                {
-                    res.Add(d[i], 1);
-                }
-            }
-            if (scores.Contains("2Four Of A Kind")) return "2 Four Of A Kind";
-            else if (scores.Contains("4Full House")) return "4Full House";
-            else if (scores.Contains("5Three Of A Kind")) return "5Three Of A Kind";
-            else if (scores.Contains("6Two Pair")) return "6Two Pair";
-            else if (scores.Contains("7Pair")) return "7Pair";
-            else return "None";
-        }
-        public static int[] BestFive(int[] d)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            res.Add(d[i], 1);
+        //        }
+        //    }
+        //    if (scores.Contains("2Four Of A Kind")) return "2 Four Of A Kind";
+        //    else if (scores.Contains("4Full House")) return "4Full House";
+        //    else if (scores.Contains("5Three Of A Kind")) return "5Three Of A Kind";
+        //    else if (scores.Contains("6Two Pair")) return "6Two Pair";
+        //    else if (scores.Contains("7Pair")) return "7Pair";
+        //    else return "None";
+        //}
+        public static void BestFive(Player player)
         {
 
-            if (d.Contains(1) && d.Contains(2) && d.Contains(3) && d.Contains(4) && d.Contains(5)) return new int[] { 1, 2, 3, 4, 5 };
-            else if (d.Contains(6) && d.Contains(2) && d.Contains(3) && d.Contains(4) && d.Contains(5)) return new int[] { 2, 3, 4, 5, 6 };
+            if (player.Dice.Contains(2) && player.Dice.Contains(3) && player.Dice.Contains(4) && player.Dice.Contains(5) && player.Dice.Contains(6)) { player.BestFive = new int[] { 2, 3, 4, 5, 6 }; player.Score = "3Straight"; return; }
+            else if (player.Dice.Contains(1) && player.Dice.Contains(2) && player.Dice.Contains(3) && player.Dice.Contains(4) && player.Dice.Contains(5)) {player.BestFive = new int[] { 1, 2, 3, 4, 5 }; player.Score = "3Straight"; return; }
 
             var res = new Dictionary<int, int>();
             for (int i = 0; i < 7; i++)
             {
-                if (res.ContainsKey(d[i]))
+                if (res.ContainsKey(player.Dice[i]))
                 {
-                    res[d[i]]++;
+                    res[player.Dice[i]]++;
                 }
                 else
                 {
-                    res.Add(d[i], 1);
+                    res.Add(player.Dice[i], 1);
                 }
             }
             if (res.ContainsValue(5))
             {
                 var x = res.FirstOrDefault(y => y.Value == 5).Key;
-                return new int[] { x, x, x, x, x };
+                player.BestFive = new int[] { x, x, x, x, x };
+                player.Score = "1Five Of A Kind";
+                return;
             }
             else if (res.ContainsValue(4))
             {
@@ -297,18 +316,20 @@ namespace WpfApp1
                 var y = new int[5] { 0, x, x, x, x, };
                 for (int i = 6; i >= 0; i--)
                 {
-                    if (!y.Contains(d[i]))
+                    if (!y.Contains(player.Dice[i]))
                     {
-                        y[0] = d[i];
-                        Array.Sort(y);
-                        return y;
+                        y[0] = player.Dice[i];                        
+                        player.BestFive = y;
+                        player.Score = "2 Four Of A Kind";
+                        return;
+
                     }
                 }
             }
             else if (res.ContainsValue(3) && res.ContainsValue(2))
             {
                 var x = res.FirstOrDefault(a => a.Value == 3).Key;
-                var y = new int[5] { x, x, x, 0, 0 };
+                var y = new int[5] { 0,0,x, x, x };
                 var z = new List<int>();
                 foreach (var kvp in res)
                 {
@@ -319,10 +340,11 @@ namespace WpfApp1
                 }
                 z.Sort();
 
-                y[4] = z[z.Count() - 1];
-                y[3] = z[z.Count() - 1];
-                Array.Sort(y);
-                return y;
+                y[0] = z[z.Count() - 1];
+                y[1] = z[z.Count() - 1];                
+                player.BestFive = y;
+                player.Score = "4Full House";
+                return;
             }
 
             else if (res.ContainsValue(3))
@@ -343,13 +365,15 @@ namespace WpfApp1
                 int x = 1;
                 for (int i = 6; i >= 0; i--)
                 {
-                    if (!y.Contains(d[i]))
+                    if (!y.Contains(player.Dice[i]))
                     {
-                        y[x] = d[i];
+                        y[x] = player.Dice[i];
                         x--;
                         if (x < 0)
                         {
-                            return y;
+                            player.BestFive = y;
+                            player.Score = "5Three Of A Kind";
+                            return;
                         }
 
                     }
@@ -371,78 +395,79 @@ namespace WpfApp1
                 if (z.Count > 1)
                 {
                     y[2] = z[z.Count - 2];
-                    y[1] = z[z.Count - 2];
-                    for (int i = 6; i >= 0; i--)
-                    {
-                        if (!y.Contains(d[i]))
-                        {
-                            y[0] = d[i];
-
-                            return y;
-                        }
-                    }
+                    player.BestFive = y;
+                    player.Score = "6Two Pair";
+                    return; 
                 }
                 else
                 {
                     var co = 2;
                     for (int i = 6; i >= 0; i--)
                     {
-                        if (!y.Contains(d[i]))
+                        if (!y.Contains(player.Dice[i]))
                         {
-                            y[co] = d[i];
+                            y[co] = player.Dice[i];
                             co--;
                             if (co < 0)
-                            {
-                                Array.Sort(y);
-                                return y;
+                            {                                
+                                player.BestFive = y;
+                                player.Score = "6Two Pair";
+                                return;
                             }
                         }
                     }
                 }
             }
-            return new int[5];
+            player.BestFive = new int[5];
+            player.Score = "6Two Pair";
+            return;
 
         }
-        public static void FindWinner(List<int[]> x)
+        public static string FindWinner()
         {
-            var res = new List<Player>();
-
-            var c = 1;
-            foreach (var y in x)
+            string ans = "";
+            
+            foreach (var player in Player.players)
             {
-                Array.Sort(y);
-                var pl = new Player();
-                pl.Dice = GameController.BestFive(y);
-                pl.Score = GameController.ScoreDice(pl.Dice);
-                pl.Name = $"Player {c}";
-                res.Add(pl);
-                c++;
+                Array.Sort(player.Dice);                
+                GameController.BestFive(player);
+                //player.Score = GameController.ScoreDice(player.BestFive);                
             }
-            List<Player> winners = res.OrderBy(o => o.Score).ThenBy(o => o.Dice[4]).ThenBy(o => o.Dice[3]).ThenBy(o => o.Dice[2]).ThenBy(o => o.Dice[1]).ThenBy(o => o.Dice[0]).ToList();
-            if (winners[0].Dice.SequenceEqual(winners[1].Dice))
+
+            List<Player> winners = Player.players.OrderBy(o => o.Score).ThenBy(o => o.BestFive[4]).ThenBy(o => o.BestFive[3]).ThenBy(o => o.BestFive[2]).ThenBy(o => o.BestFive[1]).ThenBy(o => o.BestFive[0]).ToList();
+            if (winners[0].BestFive.SequenceEqual(winners[1].BestFive))
             {
-                Console.WriteLine("By The Gods, a tie!");
+                ans += $"By The Gods, a tie!";
+                ans += Environment.NewLine;
+
                 var tied = new List<Player>() { winners[0], winners[1] };
                 for (int i = 2; i < winners.Count; i++)
                 {
-                    if (winners[0].Dice.SequenceEqual(winners[i].Dice))
+                    if (winners[0].BestFive.SequenceEqual(winners[i].BestFive))
                     {
                         tied.Add(winners[i]);
                     }
                 }
-                foreach (var p in tied)
+                int split = GameController.pot / tied.Count;
+                foreach (var player in tied)
                 {
-                    Console.WriteLine(p.Name);
+                    ans += $"{player.Name} ,";
+                    player.Gold += split;
                 }
-                Console.WriteLine($"have tied with a{winners[0].Score.Remove(0, 1)}, {winners[0].Dice[4]} high. Split the pot amoungst you.");
+                ans.Substring(ans.Length - 2);
+                ans +=$"have tied with a{winners[0].Score.Remove(0, 1)}, {winners[0].BestFive[4]} high. We'll split the pot amoungst you.";
 
             }
             else
             {
-                Console.WriteLine($"The Winner is {winners[0].Name} with a{winners[0].Score.Remove(0, 1)}, {winners[0].Dice[4]} high. Now take your winnings and leave in peace.");
+                ans += $"The Winner is {winners[0].Name} with a {winners[0].Score.Remove(0, 1)}, {winners[0].BestFive[4]} high. Now take your winnings and leave in peace.";
+                winners[0].Gold += GameController.pot;
             }
-            Console.WriteLine("Winning hand was a" + winners[0].Dice[0] + winners[0].Dice[1] + winners[0].Dice[2] + winners[0].Dice[3] + winners[0].Dice[4]);
-            Console.ReadLine();
+            ans+= Environment.NewLine ;
+            ans += "Winning hand was a" + winners[0].BestFive[0] + winners[0].BestFive[1] + winners[0].BestFive[2] + winners[0].BestFive[3] + winners[0].BestFive[4];
+            
+       
+            return ans;
         }
     }
 }

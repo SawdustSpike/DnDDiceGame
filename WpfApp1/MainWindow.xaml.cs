@@ -23,7 +23,7 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            //DisplayNames();
+            DisplayNames();
             //StartReady();
         }      
 

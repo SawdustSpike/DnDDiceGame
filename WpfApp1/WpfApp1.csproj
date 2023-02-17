@@ -121,5 +121,23 @@
   <ItemGroup>
     <Resource Include="Images\TableTop.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LeftPlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RightPlayer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="BottomPlayer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TopPlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TableTop.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="interior-old-tavern-empty-tables-207571453.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

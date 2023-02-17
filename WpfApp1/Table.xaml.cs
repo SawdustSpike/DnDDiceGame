@@ -34,6 +34,7 @@ namespace WpfApp1
                 }
             }
             UpdatePot();
+            UpdatePlayers();
         }
         private void Top_Player_Click(object sender, RoutedEventArgs e)
         {
@@ -67,6 +68,7 @@ namespace WpfApp1
                 WinnerFold(Player.players[0]); 
             }
             UpdatePot();
+            UpdatePlayers();
             FlopButton();
         }
         
@@ -76,17 +78,28 @@ namespace WpfApp1
             string txt = $"Pot Currently at {GameController.pot} Gold";
             if (GameController.flop)
             {
-                txt += "<br> Community Dice:" ;
+                txt += Environment.NewLine;
+                txt += "Community Dice:" ;
                 foreach(var dice in GameController.commDice)
                 {
                     txt += $" {dice}";
                 }
             }
-            CenterBox.Text = txt;
+            CenterBox.Text = txt;             
+        }
+        private void UpdatePlayers()
+        {
             if (PlayerController.p1) TopText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + "Gold";
             if (PlayerController.p2) BottomText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + "Gold";
             if (PlayerController.p3) LeftText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + "Gold";
-            if (PlayerController.p4) RightText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + "Gold"; 
+            if (PlayerController.p4) RightText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + "Gold";
+        }
+        private void UpdatePlayers(MainWindow newform)
+        {
+            if (PlayerController.p1) newform.topText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + "Gold";
+            if (PlayerController.p2) newform.bottomText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + "Gold";
+            if (PlayerController.p3) newform.leftText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + "Gold";
+            if (PlayerController.p4) newform.rightText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + "Gold";
         }
 
         private void WinnerFold(Player player)
@@ -110,22 +123,25 @@ namespace WpfApp1
         }
         private void Flop_Click(object sender, RoutedEventArgs e)
         {
-            Flop.Visibility = Visibility.Collapsed;
+            Flop.Visibility = Visibility.Collapsed;            
             GameController.FlopRoll();
             GameController.flop = true;
             UpdatePot();
+            UpdatePlayers();
             FlopStart.Visibility = Visibility.Visible;
         }
 
         private void FlopStart_Click(object sender, RoutedEventArgs e)
         {
-            FlopStart.Visibility=Visibility.Collapsed;          
+            FlopStart.Visibility=Visibility.Collapsed;
+            GameController.canCheck = true;
             GameController.StartBetting();
             if (Player.players.Count == 1)
             {
                 WinnerFold(Player.players[0]);
             }
             UpdatePot();
+            UpdatePlayers();
             TurnButton();
 
         }
@@ -134,17 +150,20 @@ namespace WpfApp1
             Turn.Visibility=Visibility.Collapsed;
             GameController.TurnRoll();
             UpdatePot();
+            UpdatePlayers();
             TurnStart.Visibility=Visibility.Visible;
         }
         private void TurnStart_Click(object sender, RoutedEventArgs e) 
         { 
-            TurnStart.Visibility=Visibility.Collapsed;            
+            TurnStart.Visibility=Visibility.Collapsed;
+            GameController.canCheck = true;
             GameController.StartBetting();
             if (Player.players.Count == 1)
             {
                 WinnerFold(Player.players[0]);
             }
             UpdatePot();
+            UpdatePlayers();
             RiverButton();
         }
 
@@ -153,6 +172,7 @@ namespace WpfApp1
             River.Visibility = Visibility.Collapsed;
             GameController.RiverRoll();
             UpdatePot();
+            UpdatePlayers();
             RiverStart.Visibility=Visibility.Visible;
 
         }
@@ -160,12 +180,44 @@ namespace WpfApp1
         private void RiverStart_Click(object sender, RoutedEventArgs e)
         {
             RiverStart.Visibility=Visibility.Collapsed;
+            GameController.canCheck = true;
             GameController.StartBetting();
             if (Player.players.Count == 1)
             {
                 WinnerFold(Player.players[0]);
             }
-            UpdatePot();
+            CenterBox.Width = 800;
+            CenterBox.Height = 400;
+            CenterBox.FontWeight= FontWeights.Bold;
+            CenterBox.FontSize = 20;
+            CenterBox.Text = GameController.FindWinner();
+            UpdatePlayers();
+            PlayAgain.Visibility = Visibility.Visible;
+
+            
+        }
+
+        private void PlayAgain_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(var player in Player.foldedPlayers)
+            {
+                Player.players.Add(player);
+                Player.foldedPlayers.Remove(player);
+            }
+            foreach(var player in Player.players)
+            {
+                Array.Clear(player.Dice,0,7);
+                Array.Clear(player.BestFive, 0, 5);
+                player.Score = "";
+            }
+            GameController.pot = 0;
+            GameController.flop = false;
+            GameController.commDice.Clear();
+            var newForm = new MainWindow(); //create your new form.
+            newForm.StartReady();
+            UpdatePlayers(newForm);
+            newForm.Show(); //show the new form.
+            this.Close(); //only if you want to close the current form.
         }
     }
 }

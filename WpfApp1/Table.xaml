@@ -8,33 +8,33 @@
         Title="Table" Height="450" Width="800" WindowState="Maximized">
     <Grid>
         <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="/Images/TableTop.jpg" AlignmentY="Top" AlignmentX="Center"/>
+            <ImageBrush Stretch="Fill" ImageSource="/TableTop.jpg" AlignmentY="Top" AlignmentX="Center"/>
         </Grid.Background>
         <Button Name ="Top_Player" Click ="Top_Player_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden">
-            <Image Source="/Images/TopPlayer.png" Stretch="Fill" Height="100" Width="300"></Image>
+            <Image Source="/TopPlayer.png" Stretch="Fill" Height="100" Width="300"></Image>
         </Button>
 
         <TextBlock x:Name="TopText" HorizontalAlignment="Center" VerticalAlignment="Top" Background="Black" Foreground="DarkGoldenrod" FontWeight="ExtraBold" Visibility="Hidden" Text="Click Here to See Dice"></TextBlock>
 
         <Button Name ="Bottom_Player" Click ="Bottom_Player_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Hidden">
-            <Image Source="/Images/BottomPlayer.jpg" Stretch="Fill" Height="100" Width="300"></Image>
+            <Image Source="/BottomPlayer.jpg" Stretch="Fill" Height="100" Width="300"></Image>
         </Button>
 
         <TextBlock x:Name="BottomText" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Hidden" Background="Black" Foreground="DarkGoldenrod" FontWeight="ExtraBold" Text="Click Here to Join" ></TextBlock>
 
         <Button Name ="Left_Player" Click ="Left_Player_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden">
-            <Image Source="/Images/LeftPlayer.png" Stretch="Fill" Height="300" Width="100" ></Image>
+            <Image Source="/LeftPlayer.png" Stretch="Fill" Height="300" Width="100" ></Image>
         </Button>
 
         <TextBlock x:Name="LeftText" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Background="Black"  Foreground="DarkGoldenrod" FontWeight="ExtraBold" Text="Click Here to Join" ></TextBlock>
 
         <Button Name ="Right_Player" Click ="Right_Player_Click" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Hidden">
-            <Image Source="/Images/RightPlayer.jpg" Stretch="Fill" Height="300" Width="100"></Image>
+            <Image Source="/RightPlayer.jpg" Stretch="Fill" Height="300" Width="100"></Image>
         </Button>
 
         <TextBlock x:Name="RightText" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Hidden" Background="Black" Foreground="DarkGoldenrod" FontWeight="ExtraBold" Text="Click Here to Join" ></TextBlock>
 
-        <TextBlock x:Name="CenterBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="100"  Background="Black" Foreground="DarkGoldenrod" RenderTransformOrigin="0.494,0.757"></TextBlock>
+        <TextBlock x:Name="CenterBox" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="100"  Background="Black" Foreground="DarkGoldenrod" RenderTransformOrigin="0.494,0.757" FontSize="20" FontFamily="Rockwell"></TextBlock>
         <Button Name="GameStart" Click="GameStart_Click" Content ="Start Betting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0"  />
         
         <Button Name="Flop" Click="Flop_Click" Content ="Roll The Flop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
@@ -45,5 +45,6 @@
         
         <Button Name="River" Click="River_Click" Content ="Roll The River" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
         <Button Name="RiverStart" Click="RiverStart_Click" Content ="Start Betting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
+        <Button Name="PlayAgain" Click="PlayAgain_Click" Content="Play Again?" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed"/>
     </Grid>
 </Window>
