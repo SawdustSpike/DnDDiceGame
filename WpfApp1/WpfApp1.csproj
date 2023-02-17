@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BetBox.cs" />
+    <Compile Include="ConfirmButton.cs" />
     <Compile Include="Table.xaml.cs">
       <DependentUpon>Table.xaml</DependentUpon>
     </Compile>
@@ -107,19 +108,34 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\TopPlayer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\BottomPlayer.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\LeftPlayer.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\RightPlayer.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\BottomPlayer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TopPlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Images\TableTop.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\interior-old-tavern-empty-tables-207571453.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Things-to-fix.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="interior-old-tavern-empty-tables-207571453.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TableTop.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="BottomPlayer.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="LeftPlayer.png" />
@@ -128,16 +144,7 @@
     <Resource Include="RightPlayer.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="BottomPlayer.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="TopPlayer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="TableTop.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="interior-old-tavern-empty-tables-207571453.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

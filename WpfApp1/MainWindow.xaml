@@ -8,7 +8,7 @@
         Title="The Tavern" Height="450" Width="800" WindowState="Maximized">
     <Grid x:Name="TopText">
         <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="/interior-old-tavern-empty-tables-207571453.jpg" AlignmentY="Top" AlignmentX="Center"/>
+            <ImageBrush Stretch="Fill" ImageSource="C:\Users\spike\source\repos\WpfApp1\WpfApp1\Images\interior-old-tavern-empty-tables-207571453.jpg" AlignmentY="Top" AlignmentX="Center"/>
         </Grid.Background>
         
         <Button Name ="Top_Player" Click =" Top_RollDice" HorizontalAlignment="Center" VerticalAlignment="Top">            

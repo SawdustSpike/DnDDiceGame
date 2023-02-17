@@ -35,16 +35,16 @@
         <TextBlock x:Name="RightText" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Hidden" Background="Black" Foreground="DarkGoldenrod" FontWeight="ExtraBold" Text="Click Here to Join" ></TextBlock>
 
         <TextBlock x:Name="CenterBox" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="100"  Background="Black" Foreground="DarkGoldenrod" RenderTransformOrigin="0.494,0.757" FontSize="20" FontFamily="Rockwell"></TextBlock>
-        <Button Name="GameStart" Click="GameStart_Click" Content ="Start Betting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0"  />
-        
-        <Button Name="Flop" Click="Flop_Click" Content ="Roll The Flop" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
-        <Button Name="FlopStart" Click="FlopStart_Click" Content ="Start Betting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
-        
-        <Button Name="Turn" Click="Turn_Click" Content ="Roll The Turn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
-        <Button Name="TurnStart" Click="TurnStart_Click" Content ="Start Betting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
-        
-        <Button Name="River" Click="River_Click" Content ="Roll The River" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
-        <Button Name="RiverStart" Click="RiverStart_Click" Content ="Start Betting" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed" />
-        <Button Name="PlayAgain" Click="PlayAgain_Click" Content="Play Again?" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="30" Margin="470,237,0,0" Visibility="Collapsed"/>
+        <Button Name="GameStart" Click="GameStart_Click" Content ="Start Betting" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0"   />
+
+        <Button Name="Flop" Click="Flop_Click" Content ="Roll The Flop" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0" Visibility="Collapsed" />
+        <Button Name="FlopStart" Click="FlopStart_Click" Content ="Start Betting" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0" Visibility="Collapsed" />
+
+        <Button Name="Turn" Click="Turn_Click" Content ="Roll The Turn" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0" Visibility="Collapsed" />
+        <Button Name="TurnStart" Click="TurnStart_Click" Content ="Start Betting" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0"  Visibility="Collapsed" />
+
+        <Button Name="River" Click="River_Click" Content ="Roll The River" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0" Visibility="Collapsed" />
+        <Button Name="RiverStart" Click="RiverStart_Click" Content ="Start Betting" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0" Visibility="Collapsed" />
+        <Button Name="PlayAgain" Click="PlayAgain_Click" Content="Play Again?" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="30" Margin="0,237,0,0" Visibility="Collapsed"/>
     </Grid>
 </Window>

@@ -20,7 +20,7 @@ namespace WpfApp1
         string title = "InputBox";//title as heading
         string boxcontent;//title
         string defaulttext = "";//default textbox content
-        string errormessage = "Invalid answer";//error messagebox content
+        string errormessage = "Please Enter Amount to Raise";//error messagebox content
         string errortitle = "Error";//error messagebox heading title
         /*string okbuttontext = "OK";*///Ok button content
         string callbuttontext = "Call";
@@ -103,9 +103,11 @@ namespace WpfApp1
 
         private void Betwindowdef()// window building - check only for window size
         {
-            Box.Height = 300;// Box Height
-            Box.Width = 300;// Box Width
+            Box.Height = 500;// Box Height
+            Box.Width = 600;// Box Width
             Box.Background = BoxBackgroundColor;
+            Box.VerticalAlignment = VerticalAlignment.Center;
+            Box.HorizontalAlignment = HorizontalAlignment.Center;
             Box.Title = title;
             Box.Content = sp1;
             Box.Closing += Box_Closing;
@@ -131,13 +133,13 @@ namespace WpfApp1
             check.Height = 30;
             check.Click += check_Click;
             check.Content = checkbuttontext;
-            check.HorizontalAlignment = HorizontalAlignment.Right;
+            check.HorizontalAlignment = HorizontalAlignment.Center;
             check.VerticalAlignment = VerticalAlignment.Bottom;
             call.Width = 70;
             call.Height = 30;
             call.Click += call_Click;
             call.Content = callbuttontext;
-            call.HorizontalAlignment = HorizontalAlignment.Right;
+            call.HorizontalAlignment = HorizontalAlignment.Center;
             call.VerticalAlignment = VerticalAlignment.Bottom;
             if(GameController.canCheck) sp1.Children.Add(check);
             else sp1.Children.Add(call);
@@ -145,7 +147,7 @@ namespace WpfApp1
             raise.Height = 30;
             raise.Click += raise_Click;
             raise.Content = raisebuttontext;
-            raise.HorizontalAlignment = HorizontalAlignment.Left;
+            raise.HorizontalAlignment = HorizontalAlignment.Center;
             raise.VerticalAlignment = VerticalAlignment.Bottom;
             sp1.Children.Add(raise);
             fold.Width = 70;
@@ -162,16 +164,14 @@ namespace WpfApp1
             if (!clicked)
                 e.Cancel = true;
         }
-
-        private void input_MouseDown(object sender, MouseEventArgs e)
+        void call_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as TextBox).Text == defaulttext && inputreset == false)
-            {
-                (sender as TextBox).Text = null;
-                inputreset = true;
-            }
+            GameController.rotate++;
+            clicked = true;
+            input.Text = $"{GameController.bet}";
+            Box.Close();
+            clicked = false;
         }
-       
         void check_Click(object sender, RoutedEventArgs e)
         {
             clicked = true;
@@ -181,7 +181,23 @@ namespace WpfApp1
 
             clicked = false;
         }
-
+        void fold_Click(object sender, RoutedEventArgs e)
+        {
+            clicked = true;
+            GameController.rotate++;
+            input.Text = "0";
+            folded = true;
+            Box.Close();
+            clicked = false;
+        }
+        void input_MouseDown(object sender, MouseEventArgs e)
+        {
+            if ((sender as TextBox).Text == defaulttext && inputreset == false)
+            {
+                (sender as TextBox).Text = null;
+                inputreset = true;
+            }
+        }   
         void raise_Click(object sender, RoutedEventArgs e)
         {
             GameController.rotate = 1;
@@ -192,37 +208,20 @@ namespace WpfApp1
                 MessageBox.Show(errormessage, errortitle);
             else
             {
-                input.Text = $"{bet + GameController.bet}"; 
-                Box.Close();
+                if (bet < 1) { MessageBox.Show(errormessage, errortitle); }
+                else {
+                    input.Text = $"{bet + GameController.bet}";
+                    Box.Close(); }
             }
             clicked = false;
         }
-        void call_Click(object sender, RoutedEventArgs e)
-        {
-            GameController.rotate++;
-            clicked = true;
-            input.Text = $"{GameController.bet}";
-                Box.Close();            
-            clicked = false;
-        }
-
-        void fold_Click(object sender, RoutedEventArgs e)
-        {
-            clicked = true;
-            GameController.rotate++;
-            input.Text = "0";
-            folded= true;
-            Box.Close();            
-            clicked = false;
-        }
-
         public string ShowDialog(Player player)
         {
             
             ShowDialog();
             if (folded)
             {
-                GameController.Folded(player);
+                PlayerController.Folded(player);
             }
             folded = false;
                 return input.Text;
