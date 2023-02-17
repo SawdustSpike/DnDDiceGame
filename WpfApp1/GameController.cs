@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using static WpfApp1.Table;
 
 namespace WpfApp1
 {
@@ -14,10 +15,14 @@ namespace WpfApp1
         public static bool startReady = false;
         public static int pot = 0;
         public static int bet = 0;
-        public static int rotate = 1;
+        public static int rotate = 0;
+        public static bool canCheck = true;
+        public static bool flop = false;
+        public static List<int> commDice;
 
         public static void StartBetting() 
         {
+            var t = new Table();
             int co = 0;
             int bid = 0;
             while (rotate != Player.players.Count)
@@ -26,15 +31,28 @@ namespace WpfApp1
                 
                 if(bid> 0)
                 {
-                    pot += bid;
-                    Player.players[co].CurrentBid += bid;
-                    Player.players[co].Gold -= bid;
-                    if(Player.players[co].CurrentBid> bet) { bet = Player.players[co].CurrentBid; }
+                    int current = bid - Player.players[co].CurrentBid;
+                    pot += current;
+                    Player.players[co].CurrentBid = bid;
+                    Player.players[co].Gold -= current;
+                    t.UpdatePot();
                 }
                 co++;
                 if (co == Player.players.Count) { co = 0; }
+                if (Player.players.Count == 1) break;
 
             }
+        }
+        public static void Folded(Player player)
+        {
+            switch(player.Number)
+            {
+                case 1:PlayerController.p1 = false; break;
+                case 2: PlayerController.p2 = false; break;
+                case 3: PlayerController.p3 = false; break;
+                case 4: PlayerController.p4 = false; break;
+            }
+            Player.players.Remove(player);
         }
         public static void IndividualRoll()
         {
@@ -72,7 +90,7 @@ namespace WpfApp1
             while (!gotint)
             {
                 gotint = int.TryParse( new BetBox($"{player.Name}, action is on you. What do you wish to do?").ShowDialog(player), out gold);
-                if(gold> player.Gold)
+                if(gold - player.CurrentBid> player.Gold)
                 {
                     MessageBox.Show("You can only bet what you have, Try Again");
                     gotint= false;
@@ -91,44 +109,42 @@ namespace WpfApp1
             return gold;
         }
 
-        public static List<int[]> FlopRoll(List<int[]> x)
+        public static void FlopRoll()
         {
             Random rnd = new Random();
             int j = rnd.Next(1, 7);
             int k = rnd.Next(1, 7);
             int l = rnd.Next(1, 7);
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < Player.players.Count; i++)
             {
-                x[i][2] = j;
-                x[i][3] = k;
-                x[i][4] = l;
-
+                Player.players[i].Dice[2] = j;
+                Player.players[i].Dice[3] = k;
+                Player.players[i].Dice[4] = l;
             }
-            return x;
+            
         }
 
-        public static List<int[]> TurnRoll(List<int[]> x)
+        public static void TurnRoll()
         {
             Random rnd = new Random();
             int j = rnd.Next(1, 7);
 
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < Player.players.Count; i++)
             {
-                x[i][5] = j;
-
+                Player.players[i].Dice[5] = j;
             }
-            return x;
+            
         }
-        public static List<int[]> RiverRoll(List<int[]> x)
+        public static void RiverRoll()
         {
             Random rnd = new Random();
             int j = rnd.Next(1, 7);
 
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < Player.players.Count; i++)
             {
-                x[i][6] = j;
+                Player.players[i].Dice[6] = j;
             }
-            return x;
+            
         }
         public static void DisplayFirstRolls(List<int[]> x)
         {

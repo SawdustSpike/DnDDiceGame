@@ -9,8 +9,11 @@ namespace WpfApp1
     public class Player
     {
         public static List<Player> players = new List<Player>();
-        public Player()
-        {            
+        //{ new Player { Name = "Mike", Gold = 1000, Number = 1},
+//          new Player { Name = "Jess", Gold = 1000, Number = 2 }
+//};
+public Player() 
+        {
             Player.players.Add(this);
         }
         public int Number { get; set; }

@@ -23,7 +23,8 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-
+            //DisplayNames();
+            //StartReady();
         }      
 
     private void Top_RollDice(object sender, RoutedEventArgs e)
@@ -76,6 +77,7 @@ namespace WpfApp1
         }
         private void GameStart(object sender, RoutedEventArgs e)
         {
+            GameController.IndividualRoll();
             var newForm = new Table(); //create your new form.
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.

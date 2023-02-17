@@ -34,8 +34,7 @@ namespace WpfApp1
         Button check = new Button();
         Button call = new Button();
         Button raise = new Button();
-        Button fold = new Button();
-        bool canCheck = true;
+        Button fold = new Button();        
         bool inputreset = false;
         bool folded = false;
 
@@ -140,7 +139,7 @@ namespace WpfApp1
             call.Content = callbuttontext;
             call.HorizontalAlignment = HorizontalAlignment.Right;
             call.VerticalAlignment = VerticalAlignment.Bottom;
-            if (canCheck) sp1.Children.Add(check);
+            if(GameController.canCheck) sp1.Children.Add(check);
             else sp1.Children.Add(call);
             raise.Width = 70;
             raise.Height = 30;
@@ -186,12 +185,14 @@ namespace WpfApp1
         void raise_Click(object sender, RoutedEventArgs e)
         {
             GameController.rotate = 1;
-            canCheck= false;
+            GameController.canCheck= false;
             clicked = true;
-            if (input.Text == defaulttext || input.Text == "")
+            int bet = 0;
+            if (input.Text == defaulttext || input.Text == "" || !int.TryParse(input.Text, out bet))
                 MessageBox.Show(errormessage, errortitle);
             else
             {
+                input.Text = $"{bet + GameController.bet}"; 
                 Box.Close();
             }
             clicked = false;
@@ -200,29 +201,38 @@ namespace WpfApp1
         {
             GameController.rotate++;
             clicked = true;
-            if (input.Text == defaulttext || input.Text == "")
-                MessageBox.Show(errormessage, errortitle);
-            else
-            {
-                Box.Close();
-            }
+            input.Text = $"{GameController.bet}";
+                Box.Close();            
             clicked = false;
         }
 
         void fold_Click(object sender, RoutedEventArgs e)
         {
             clicked = true;
+            GameController.rotate++;
             input.Text = "0";
-            Box.Close();
-            
+            folded= true;
+            Box.Close();            
             clicked = false;
         }
 
         public string ShowDialog(Player player)
         {
-            if (folded) { Player.players.Remove(player); }
+            
+            ShowDialog();
+            if (folded)
+            {
+                GameController.Folded(player);
+            }
+            folded = false;
+                return input.Text;
+        }  
+        public string ShowDialog()
+        {
             Box.ShowDialog();
             return input.Text;
-        }       
+        }
+        
+
     }
 }
