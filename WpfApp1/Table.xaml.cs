@@ -27,6 +27,7 @@ namespace WpfApp1
         }
         private void Bottom_Player_Click(object sender, RoutedEventArgs e)
         {
+            // activated when players images are clicked, either shows thier dice or confirms they folded. one for each player.
             if (PlayerController.p2)
             {
                 var player = PlayerController.RetrievePlayer(2);
@@ -37,8 +38,9 @@ namespace WpfApp1
                 MessageBox.Show("This player has folded");
             }
         }
-        private void CheckVisibility()
+        private void CheckVisibility()           
         {
+            //makes sure only players who have joined are shown at the table
             for (int i = 0; i < Player.players.Count; i++)
             {
                 switch (Player.players[i].Number)
@@ -56,6 +58,7 @@ namespace WpfApp1
         }
         private void Flop_Click(object sender, RoutedEventArgs e)
         {
+            //give players opportunity to look at dice between rounds, cycles the start round buttons. one for each round.
             Flop.Visibility = Visibility.Collapsed;
             GameController.FlopRoll();
             GameController.flop = true;
@@ -65,6 +68,7 @@ namespace WpfApp1
         }
         private void FlopStart_Click(object sender, RoutedEventArgs e)
         {
+            //starts round. one for each round.
             FlopStart.Visibility = Visibility.Collapsed;
             GameController.canCheck = true;
             GameController.StartBetting();
@@ -105,6 +109,7 @@ namespace WpfApp1
         }
         private void PlayAgain_Click(object sender, RoutedEventArgs e)
         {
+            //reset the game so you can play again with the same players with thier current gold amount.
             foreach (var player in Player.players)
             {
                 Array.Clear(player.Dice, 0, 7);
@@ -207,6 +212,7 @@ namespace WpfApp1
         }        
         private void UpdatePlayers()
         {
+            //shows current gold amount, as well as fades the image of players who folded
             if (PlayerController.p1) TopText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(1).Name + "'s Dice";
             else { if (Top_Player.Visibility == Visibility.Visible) Top_Player.Opacity = .25; TopText.Text = $"{PlayerController.RetrievePlayer(1)} Folded"; }
 
@@ -221,6 +227,7 @@ namespace WpfApp1
         }
         private void UpdatePlayers(MainWindow newform)
         {
+            //updates the opening page for returning players playing a second game.
             if (PlayerController.p1) newform.topText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + " Gold";
             if (PlayerController.p2) newform.bottomText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + " Gold";
             if (PlayerController.p3) newform.leftText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + " Gold";
@@ -228,6 +235,7 @@ namespace WpfApp1
         }
         public void UpdatePot()
         {
+            //makes sure the center text bos is always displaying up to date information, like community dice rolls and the current amount of money in pot.
             CenterBox.Visibility = Visibility.Visible;
             string txt = $"Pot Currently at {GameController.pot} Gold";
             if (GameController.flop)
@@ -243,6 +251,7 @@ namespace WpfApp1
         }
         private void WinnerFold(Player player)
         {
+            //is called if a player wins becuase all other players have folded. links the to play again function.
             player.Gold += GameController.pot;
             CenterBox.Text= $"All Player but {player.Name} have folded. {player.Name} wins {GameController.pot} and now has {player.Gold}. Congratulations!!";
             Flop.Visibility= Visibility.Collapsed;

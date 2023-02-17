@@ -20,12 +20,15 @@ namespace WpfApp1
     {
         public MainWindow()
         {
+            //creates the opening window. if this is your second game it will autoload characters from last game.
             InitializeComponent();
             DisplayNames();
             if (Player.players.Count > 1) { StartReady(); }
         }      
         private void Bottom_RollDice(object sender, RoutedEventArgs e)
         {
+            // one for each character, Alternates between creating character and deleting them.
+            // If two characters are created it will give you the option to start the game
             if (PlayerController.p2)
             {
                 var player = PlayerController.RetrievePlayer(2);
@@ -52,6 +55,7 @@ namespace WpfApp1
         }
         public void DisplayNames()
         {
+            //adds names to center text box
             CenterBox.Visibility = Visibility.Visible;
             string ready = "Players Ready:";
             foreach (var player in Player.players) { ready += " " + player.Name + ","; };
@@ -59,6 +63,7 @@ namespace WpfApp1
         }
         private void GameStart(object sender, RoutedEventArgs e)
         {
+            //sets up the game and send user to next window, with some animation effects
             GameController.IndividualRoll();
             var newForm = new Table();
             newForm.Opacity = 0;
@@ -123,13 +128,13 @@ namespace WpfApp1
         }
         public void StartReady()
         {
+            // makes start button appear
             DisplayNames();
             gameStart.Visibility = Visibility.Visible;
-
-
         }
         public void StopReady()
         {
+            //if player is deleted, hides the start button
             gameStart.Visibility = Visibility.Collapsed;
         }
         private void Top_RollDice(object sender, RoutedEventArgs e)

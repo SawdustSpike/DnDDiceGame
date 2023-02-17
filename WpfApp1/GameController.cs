@@ -21,7 +21,8 @@ namespace WpfApp1
         public static List<int> commDice = new List<int>();
         public static void BestFive(Player player)
         {
-
+            //finds the best five dice out of the seven available, saves them in the players BestFive atribute and also give player scores(starting with numbers for ranking sake)
+            //Considering chopping this one up into more methods since it's SO big
             if (player.Dice.Contains(2) && player.Dice.Contains(3) && player.Dice.Contains(4) && player.Dice.Contains(5) && player.Dice.Contains(6)) { player.BestFive = new int[] { 2, 3, 4, 5, 6 }; player.Score = "3Straight"; return; }
             else if (player.Dice.Contains(1) && player.Dice.Contains(2) && player.Dice.Contains(3) && player.Dice.Contains(4) && player.Dice.Contains(5)) { player.BestFive = new int[] { 1, 2, 3, 4, 5 }; player.Score = "3Straight"; return; }
 
@@ -159,6 +160,7 @@ namespace WpfApp1
         }
         public static int BetGetter(Player player)
         {
+            // Method for parsing bets from users, also for displaying current bet and how much players need to spend to stay in
             bool gotint = false;
             int gold = 0;
             while (!gotint)
@@ -178,13 +180,13 @@ namespace WpfApp1
         }
         public static string FindWinner()
         {
+            //finds winner and returns final statement for main text box
             string ans = "";
 
             foreach (var player in Player.players)
             {
                 Array.Sort(player.Dice);
-                GameController.BestFive(player);
-                //player.Score = GameController.ScoreDice(player.BestFive);                
+                GameController.BestFive(player);                               
             }
 
             List<Player> winners = Player.players.OrderBy(o => o.Score).ThenBy(o => o.BestFive[4]).ThenBy(o => o.BestFive[3]).ThenBy(o => o.BestFive[2]).ThenBy(o => o.BestFive[1]).ThenBy(o => o.BestFive[0]).ToList();
@@ -224,6 +226,7 @@ namespace WpfApp1
         }
         public static void FlopRoll()
         {
+            //these methods add dice to the middle text box as well as to each players dice array
             Random rnd = new Random();
             int j = rnd.Next(1, 7);
             int k = rnd.Next(1, 7);
@@ -241,6 +244,7 @@ namespace WpfApp1
         }
         public static int GoldGetter()
         {
+            //helps with parsing the gold amount entered by user
             bool gotint = false;
             int gold = 0;
             while (!gotint)
@@ -272,6 +276,7 @@ namespace WpfApp1
         }
         public static void ResetBets()
         {
+            //resets the bets between rounds
             rotate = 0;
             bet = 0;
             foreach (Player player in Player.players)
@@ -293,6 +298,7 @@ namespace WpfApp1
         }
         public static void StartBetting() 
         {
+            //Method that runs every round of betting
             var t = new Table();
             int co = 0;
             int bid = 0;
@@ -314,7 +320,7 @@ namespace WpfApp1
                         t.UpdatePot();
                     }
                 }
-                else { rotate--; }
+                else { rotate--; } //I dont know why this works. it just does. without it one person folding always keeps one other person at the table from being able to bet.
                 co++;
                 if (co == Player.players.Count) { co = 0; }              
 
