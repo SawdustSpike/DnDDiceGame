@@ -29,12 +29,12 @@ namespace WpfApp1
         {
             // one for each character, Alternates between creating character and deleting them.
             // If two characters are created it will give you the option to start the game
-            if (PlayerController.p2)
+            if (PlayerController.p3)
             {
-                var player = PlayerController.RetrievePlayer(2);
+                var player = PlayerController.RetrievePlayer(3);
                 if (new ConfirmBox($"Are you sure you want to remove {player.Name} from the game?").ShowDialog())
                 {
-                    PlayerController.p2 = false;
+                    PlayerController.p3 = false;
                     bottomText.Text = "Click Here to Join";
                     Player.players.Remove(player);
                     DisplayNames();
@@ -45,11 +45,11 @@ namespace WpfApp1
             }
             else
             {
-                PlayerController.p2 = true;
+                PlayerController.p3 = true;
                 string name = new InputBox("Enter Players Name").ShowDialog();
                 int gold = GameController.GoldGetter();
-                var player2 = new Player() { Name = name, Gold = gold, Number = 2 };
-                bottomText.Text = player2.Name + " " + player2.Gold + " Gold" + Environment.NewLine + "Click to Remove Player";
+                var player3 = new Player() { Name = name, Gold = gold, Number = 3 };
+                bottomText.Text = player3.Name + " " + player3.Gold + " Gold" + Environment.NewLine + "Click to Remove Player";
                 if (Player.players.Count > 1) { StartReady(); } else { DisplayNames(); }
             }
         }
@@ -64,11 +64,13 @@ namespace WpfApp1
         private void GameStart(object sender, RoutedEventArgs e)
         {
             //sets up the game and send user to next window, with some animation effects
-            GameController.IndividualRoll();
-            var newForm = new Table();
-            newForm.Opacity = 0;
+            GameController.IndividualRoll(); //rolls seceret dice for every player            
+            GameController.AssignStartingPlayer(); //Randomly Assigns starting Player
+            Player.players = Player.players.OrderBy(p => p.Number).ToList(); // orders player by player number to help rotation
+            var newForm = new Table(); // Creates game table
+            newForm.Opacity = 0; // starts new table out as black
             newForm.Show();
-            DoubleAnimation da = new DoubleAnimation();
+            DoubleAnimation da = new DoubleAnimation(); //animation to fade table into view
             da.From = 0;
             da.To = 1;
             da.Duration = new Duration(TimeSpan.FromSeconds(2));
@@ -77,12 +79,12 @@ namespace WpfApp1
         }
         private void Left_RollDice(object sender, RoutedEventArgs e)
         {
-            if (PlayerController.p3)
+            if (PlayerController.p4)
             {
-                var player = PlayerController.RetrievePlayer(3);
+                var player = PlayerController.RetrievePlayer(4);
                 if (new ConfirmBox($"Are you sure you want to remove {player.Name} from the game?").ShowDialog())
                 {
-                    PlayerController.p3 = false;
+                    PlayerController.p4 = false;
                     leftText.Text = "Click Here to Join";
                     Player.players.Remove(player);
                     DisplayNames();
@@ -92,22 +94,22 @@ namespace WpfApp1
             }
             else
             {
-                PlayerController.p3 = true;
+                PlayerController.p4 = true;
                 string name = new InputBox("Enter Players Name").ShowDialog();
                 int gold = GameController.GoldGetter();
-                var player3 = new Player() { Name = name, Gold = gold, Number = 3 };
-                leftText.Text = player3.Name + " " + player3.Gold + " Gold" + Environment.NewLine + "Click to Remove Player";
+                var player4 = new Player() { Name = name, Gold = gold, Number = 4 };
+                leftText.Text = player4.Name + " " + player4.Gold + " Gold" + Environment.NewLine + "Click to Remove Player";
                 if (Player.players.Count > 1) { StartReady(); } else { DisplayNames(); }
             }
         }
         private void Right_RollDice(object sender, RoutedEventArgs e)
         {
-            if (PlayerController.p4)
+            if (PlayerController.p2)
             {
-                var player = PlayerController.RetrievePlayer(4);
+                var player = PlayerController.RetrievePlayer(2);
                 if (new ConfirmBox($"Are you sure you want to remove {player.Name} from the game?").ShowDialog())
                 {
-                    PlayerController.p4 = false;
+                    PlayerController.p2 = false;
                     rightText.Text = "Click Here to Join";
                     Player.players.Remove(player);
                     DisplayNames();
@@ -118,11 +120,11 @@ namespace WpfApp1
             }
             else
             {
-                PlayerController.p4 = true;
+                PlayerController.p2 = true;
                 string name = new InputBox("Enter Players Name").ShowDialog();
                 int gold = GameController.GoldGetter();
-                var player4 = new Player() { Name = name, Gold = gold, Number = 4 };
-                rightText.Text = player4.Name + " " + player4.Gold + " Gold" + Environment.NewLine + "Click to Remove Player";
+                var player2 = new Player() { Name = name, Gold = gold, Number = 2 };
+                rightText.Text = player2.Name + " " + player2.Gold + " Gold" + Environment.NewLine + "Click to Remove Player";
                 if (Player.players.Count > 1) { StartReady(); } else { DisplayNames(); }
             }
         }

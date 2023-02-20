@@ -13,12 +13,29 @@ namespace WpfApp1
     public class GameController
     {
         public static bool startReady = false;
+        public static int startingPlayer = -1;
         public static int pot = 0;
         public static int bet = 0;
         public static int rotate = 0;
         public static bool canCheck = true;
         public static bool flop = false;
         public static List<int> commDice = new List<int>();
+        public static void AssignStartingPlayer()
+        {
+            var ran = new Random();
+            if (startingPlayer == -1) // Checks to see if starting player has been selected, if not
+            {
+                startingPlayer = ran.Next(0, Player.players.Count); //Randomly assigns starting player
+            }
+            else
+            {
+                startingPlayer++; //If this is not the first time through it rotates deal one player clockwise
+                if(startingPlayer >= Player.players.Count)
+                {
+                    startingPlayer = 0; // Keeps rotation in bounds of Array
+                }
+            }
+        }
         public static void BestFive(Player player)
         {
             //finds the best five dice out of the seven available, saves them in the players BestFive atribute and also give player scores(starting with numbers for ranking sake)
@@ -299,12 +316,12 @@ namespace WpfApp1
         public static void StartBetting() 
         {
             //Method that runs every round of betting
-            var t = new Table();
-            int co = 0;
+            
+            int co = startingPlayer; //starts the action on stating player. maybe I should make the varible name more discriptive.
             int bid = 0;
             while (rotate < PlayerController.inPlay)
             {
-                while (Player.players[co].Folded) { co++; if (co == Player.players.Count) { co = 0; } }             
+                while (Player.players[co].Folded) { co++; if (co == Player.players.Count) { co = 0; } } //Checks to see if current player folded, if so it skips thier turn.            
                 bid = BetGetter(Player.players[co]);
                 PlayerController.CheckinPlay();
                 if (PlayerController.inPlay == 1 ) return;
@@ -316,8 +333,7 @@ namespace WpfApp1
                         int current = bid - Player.players[co].CurrentBid;
                         pot += current;
                         Player.players[co].CurrentBid = bid;
-                        Player.players[co].Gold -= current;
-                        t.UpdatePot();
+                        Player.players[co].Gold -= current;                        
                     }
                 }
                 else { rotate--; } //I dont know why this works. it just does. without it one person folding always keeps one other person at the table from being able to bet.

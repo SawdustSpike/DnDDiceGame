@@ -28,9 +28,9 @@ namespace WpfApp1
         private void Bottom_Player_Click(object sender, RoutedEventArgs e)
         {
             // activated when players images are clicked, either shows thier dice or confirms they folded. one for each player.
-            if (PlayerController.p2)
+            if (PlayerController.p3)
             {
-                var player = PlayerController.RetrievePlayer(2);
+                var player = PlayerController.RetrievePlayer(3);
                 MessageBox.Show($"You Rolled a {player.Dice[0]} {player.Dice[1]}");
             }
             else
@@ -46,9 +46,10 @@ namespace WpfApp1
                 switch (Player.players[i].Number)
                 {
                     case 1: Top_Player.Visibility = Visibility.Visible; TopText.Visibility = Visibility.Visible; PlayerController.p1 = true; break;
-                    case 2: Bottom_Player.Visibility = Visibility.Visible; BottomText.Visibility = Visibility.Visible; PlayerController.p2 = true; break;
-                    case 3: Left_Player.Visibility = Visibility.Visible; LeftText.Visibility = Visibility.Visible; PlayerController.p3 = true; break;
-                    case 4: Right_Player.Visibility = Visibility.Visible; RightText.Visibility = Visibility.Visible; PlayerController.p4 = true; break;
+                    case 2: Right_Player.Visibility = Visibility.Visible; RightText.Visibility = Visibility.Visible; PlayerController.p2 = true; break;
+                    case 3: Bottom_Player.Visibility = Visibility.Visible; BottomText.Visibility = Visibility.Visible; PlayerController.p3 = true; break;
+                    case 4: Left_Player.Visibility = Visibility.Visible; LeftText.Visibility = Visibility.Visible; PlayerController.p4 = true; break;
+                    
                 }
             }
         }
@@ -97,9 +98,9 @@ namespace WpfApp1
         }
         private void Left_Player_Click(object sender, RoutedEventArgs e)
         {
-            if (PlayerController.p3)
+            if (PlayerController.p4)
             {
-                var player = PlayerController.RetrievePlayer(3);
+                var player = PlayerController.RetrievePlayer(4);
                 MessageBox.Show($"You Rolled a {player.Dice[0]} {player.Dice[1]}");
             }
             else
@@ -129,9 +130,9 @@ namespace WpfApp1
         }
         private void Right_Player_Click(object sender, RoutedEventArgs e)
         {
-            if (PlayerController.p4)
+            if (PlayerController.p2)
             {
-                var player = PlayerController.RetrievePlayer(4);
+                var player = PlayerController.RetrievePlayer(2);
                 MessageBox.Show($"You Rolled a {player.Dice[0]} {player.Dice[1]}");
             }
             else
@@ -216,22 +217,25 @@ namespace WpfApp1
             if (PlayerController.p1) TopText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(1).Name + "'s Dice";
             else { if (Top_Player.Visibility == Visibility.Visible) Top_Player.Opacity = .25; TopText.Text = $"{PlayerController.RetrievePlayer(1)} Folded"; }
 
-            if (PlayerController.p2) BottomText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(2).Name + "'s Dice";
-            else { if (Bottom_Player.Visibility == Visibility.Visible) Bottom_Player.Opacity = .25; BottomText.Text = $"{PlayerController.RetrievePlayer(2).Name} Folded"; }
+            if (PlayerController.p2) RightText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(2).Name + "'s Dice";
+            else { if (Right_Player.Visibility == Visibility.Visible) Right_Player.Opacity = .25; RightText.Text = $"{PlayerController.RetrievePlayer(2).Name} Folded"; }
 
-            if (PlayerController.p3) LeftText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(3).Name + "'s Dice";
-            else { if (Left_Player.Visibility == Visibility.Visible) Left_Player.Opacity = .25; LeftText.Text = $"{PlayerController.RetrievePlayer(3).Name} Folded"; }
+            if (PlayerController.p3) BottomText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(3).Name + "'s Dice";
+            else { if (Bottom_Player.Visibility == Visibility.Visible) Bottom_Player.Opacity = .25; BottomText.Text = $"{PlayerController.RetrievePlayer(3).Name} Folded"; }
 
-            if (PlayerController.p4) RightText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(4).Name + "'s Dice";
-            else { if (Right_Player.Visibility == Visibility.Visible) Right_Player.Opacity = .25; RightText.Text = $"{PlayerController.RetrievePlayer(4).Name} Folded"; }
+            if (PlayerController.p4) LeftText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(4).Name + "'s Dice";
+            else { if (Left_Player.Visibility == Visibility.Visible) Left_Player.Opacity = .25; LeftText.Text = $"{PlayerController.RetrievePlayer(4).Name} Folded"; }
+
+           
         }
         private void UpdatePlayers(MainWindow newform)
         {
             //updates the opening page for returning players playing a second game.
             if (PlayerController.p1) newform.topText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + " Gold";
-            if (PlayerController.p2) newform.bottomText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + " Gold";
-            if (PlayerController.p3) newform.leftText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + " Gold";
-            if (PlayerController.p4) newform.rightText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + " Gold";
+            if (PlayerController.p2) newform.rightText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + " Gold";
+            if (PlayerController.p3) newform.bottomText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + " Gold";
+            if (PlayerController.p4) newform.leftText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + " Gold";
+            
         }
         public void UpdatePot()
         {
