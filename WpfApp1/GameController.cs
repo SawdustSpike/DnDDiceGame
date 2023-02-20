@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
-using static WpfApp1.Table;
 
-namespace WpfApp1
+
+namespace DnDDiceGame
 {
     public class GameController
     {
@@ -38,21 +38,25 @@ namespace WpfApp1
         }
         public static void BestFive(Player player)
         {
+            var allSeven = new List<int>()
+            { player.Dice[0], player.Dice[1], commDice[0], commDice[1], commDice[2], commDice[3], commDice[4]};
+            allSeven.Sort();
+            
             //finds the best five dice out of the seven available, saves them in the players BestFive atribute and also give player scores(starting with numbers for ranking sake)
             //Considering chopping this one up into more methods since it's SO big
-            if (player.Dice.Contains(2) && player.Dice.Contains(3) && player.Dice.Contains(4) && player.Dice.Contains(5) && player.Dice.Contains(6)) { player.BestFive = new int[] { 2, 3, 4, 5, 6 }; player.Score = "3Straight"; return; }
-            else if (player.Dice.Contains(1) && player.Dice.Contains(2) && player.Dice.Contains(3) && player.Dice.Contains(4) && player.Dice.Contains(5)) { player.BestFive = new int[] { 1, 2, 3, 4, 5 }; player.Score = "3Straight"; return; }
+            if (allSeven.Contains(2) && allSeven.Contains(3) && allSeven.Contains(4) && allSeven.Contains(5) && allSeven.Contains(6)) { player.BestFive = new int[] { 2, 3, 4, 5, 6 }; player.Score = "3Straight"; return; }
+            else if (allSeven.Contains(1) && allSeven.Contains(2) && allSeven.Contains(3) && allSeven.Contains(4) && allSeven.Contains(5)) { player.BestFive = new int[] { 1, 2, 3, 4, 5 }; player.Score = "3Straight"; return; }
 
             var res = new Dictionary<int, int>();
             for (int i = 0; i < 7; i++)
             {
-                if (res.ContainsKey(player.Dice[i]))
+                if (res.ContainsKey(allSeven[i]))
                 {
-                    res[player.Dice[i]]++;
+                    res[allSeven[i]]++;
                 }
                 else
                 {
-                    res.Add(player.Dice[i], 1);
+                    res.Add(allSeven[i], 1);
                 }
             }
             if (res.ContainsValue(5))
@@ -68,9 +72,9 @@ namespace WpfApp1
                 var y = new int[5] { 0, x, x, x, x, };
                 for (int i = 6; i >= 0; i--)
                 {
-                    if (!y.Contains(player.Dice[i]))
+                    if (!y.Contains(allSeven[i]))
                     {
-                        y[0] = player.Dice[i];
+                        y[0] = allSeven[i];
                         player.BestFive = y;
                         player.Score = "2 Four Of A Kind";
                         return;
@@ -117,9 +121,9 @@ namespace WpfApp1
                 int x = 1;
                 for (int i = 6; i >= 0; i--)
                 {
-                    if (!y.Contains(player.Dice[i]))
+                    if (!y.Contains(allSeven[i]))
                     {
-                        y[x] = player.Dice[i];
+                        y[x] = allSeven[i];
                         x--;
                         if (x < 0)
                         {
@@ -156,9 +160,9 @@ namespace WpfApp1
                     var co = 2;
                     for (int i = 6; i >= 0; i--)
                     {
-                        if (!y.Contains(player.Dice[i]))
+                        if (!y.Contains(allSeven[i]))
                         {
-                            y[co] = player.Dice[i];
+                            y[co] = allSeven[i];
                             co--;
                             if (co < 0)
                             {
@@ -199,14 +203,13 @@ namespace WpfApp1
         {
             //finds winner and returns final statement for main text box
             string ans = "";
-
-            foreach (var player in Player.players)
-            {
-                Array.Sort(player.Dice);
-                GameController.BestFive(player);                               
+            List<Player> inPlay = Player.players.Where(x => x.Folded == false).ToList();
+            foreach (var player in inPlay)
+            {                
+                BestFive(player);                               
             }
 
-            List<Player> winners = Player.players.OrderBy(o => o.Score).ThenBy(o => o.BestFive[4]).ThenBy(o => o.BestFive[3]).ThenBy(o => o.BestFive[2]).ThenBy(o => o.BestFive[1]).ThenBy(o => o.BestFive[0]).ToList();
+            List<Player> winners = inPlay.OrderBy(o => o.Score).ThenByDescending(o => o.BestFive[4]).ThenByDescending(o => o.BestFive[3]).ThenByDescending(o => o.BestFive[2]).ThenByDescending(o => o.BestFive[1]).ThenByDescending(o => o.BestFive[0]).ToList();
             if (winners[0].BestFive.SequenceEqual(winners[1].BestFive))
             {
                 ans += $"By The Gods, a tie!";
@@ -220,7 +223,7 @@ namespace WpfApp1
                         tied.Add(winners[i]);
                     }
                 }
-                int split = GameController.pot / tied.Count;
+                int split = pot / tied.Count;
                 foreach (var player in tied)
                 {
                     ans += $"{player.Name} ,";
@@ -233,11 +236,18 @@ namespace WpfApp1
             else
             {
                 ans += $"The Winner is {winners[0].Name} with a {winners[0].Score.Remove(0, 1)}, {winners[0].BestFive[4]} high. Now take your winnings and leave in peace.";
-                winners[0].Gold += GameController.pot;
+                winners[0].Gold += pot;
             }
             ans += Environment.NewLine;
-            ans += "Winning hand was a" + winners[0].BestFive[0] + winners[0].BestFive[1] + winners[0].BestFive[2] + winners[0].BestFive[3] + winners[0].BestFive[4];
-
+            ans += "Winning hand was a " + winners[0].BestFive[0] + winners[0].BestFive[1] + winners[0].BestFive[2] + winners[0].BestFive[3] + winners[0].BestFive[4];
+            ans += Environment.NewLine;
+            ans += $" Community Dice : {commDice[0]} {commDice[1]} {commDice[2]} {commDice[3]} {commDice[04]}";
+            ans+= Environment.NewLine;
+            foreach(var player in inPlay)
+            {
+                ans += player.Name + " had " + player.Dice[0] + " " + player.Dice[1];
+                ans+= Environment.NewLine;
+            }
 
             return ans;
         }
@@ -251,12 +261,12 @@ namespace WpfApp1
             commDice.Add(j);
             commDice.Add(k);
             commDice.Add(l);
-            for (int i = 0; i < Player.players.Count; i++)
-            {
-                Player.players[i].Dice[2] = j;
-                Player.players[i].Dice[3] = k;
-                Player.players[i].Dice[4] = l;
-            }
+            //for (int i = 0; i < Player.players.Count; i++)
+            //{
+            //    Player.players[i].Dice[2] = j;
+            //    Player.players[i].Dice[3] = k;
+            //    Player.players[i].Dice[4] = l;
+            //}
 
         }
         public static int GoldGetter()
@@ -283,7 +293,7 @@ namespace WpfApp1
             Random rnd = new Random();
             for (int k = 0; k < j; k++)
             {
-                var d = new int[7];
+                var d = new int[2];
                 for (int i = 0; i < 2; i++)
                 {
                     d[i] = rnd.Next(1, 7);
@@ -307,10 +317,10 @@ namespace WpfApp1
             int j = rnd.Next(1, 7);
             commDice.Add(j);
 
-            for (int i = 0; i < Player.players.Count; i++)
-            {
-                Player.players[i].Dice[6] = j;
-            }
+            //for (int i = 0; i < Player.players.Count; i++)
+            //{
+            //    Player.players[i].Dice[6] = j;
+            //}
 
         }
         public static void StartBetting() 
@@ -349,10 +359,10 @@ namespace WpfApp1
             int j = rnd.Next(1, 7);
             commDice.Add(j);
 
-            for (int i = 0; i < Player.players.Count; i++)
-            {
-                Player.players[i].Dice[5] = j;
-            }
+            //for (int i = 0; i < Player.players.Count; i++)
+            //{
+            //    Player.players[i].Dice[5] = j;
+            //}
             
         }        
     }

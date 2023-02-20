@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace DnDDiceGame
 {    
     public partial class Table : Window
     {
@@ -113,8 +113,11 @@ namespace WpfApp1
             //reset the game so you can play again with the same players with thier current gold amount.
             foreach (var player in Player.players)
             {
-                Array.Clear(player.Dice, 0, 7);
+                Array.Clear(player.Dice, 0, 2);
+                if (!player.Folded) 
+                { 
                 Array.Clear(player.BestFive, 0, 5);
+                }
                 player.Score = "";
                 player.Folded = false;
             }

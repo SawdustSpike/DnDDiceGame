@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.TextFormatting;
 
-namespace WpfApp1
+namespace DnDDiceGame
 {
     public class PlayerController
     {

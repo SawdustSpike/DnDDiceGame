@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WpfApp1\WpfApp1.csproj" />
+    <ProjectReference Include="..\WpfApp1\DnDDiceGame.csproj" />
   </ItemGroup>
 
 </Project>

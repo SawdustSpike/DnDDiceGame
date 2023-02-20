@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
 
-namespace WpfApp1
+namespace DnDDiceGame
 {
     public class ConfirmBox
     {
@@ -19,10 +19,7 @@ namespace WpfApp1
         StackPanel sp1 = new StackPanel();// items container
         string title = "ConfirmBox";//title as heading
         string boxcontent;//title
-        string defaulttext = "";//default textbox content
-        string errormessage = "Invalid answer";//error messagebox content
-        string errortitle = "Error";//error messagebox heading title
-        string okbuttontext = "OK";//Ok button content
+        string defaulttext = "";//default textbox content     
         string nobuttontext = "NO";
         string yesbuttontext = "Yes";
         Brush BoxBackgroundColor = Brushes.GreenYellow;// Window Background
