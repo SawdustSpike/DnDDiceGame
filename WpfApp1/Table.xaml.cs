@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DnDDiceGame
+namespace WpfApp1
 {    
     public partial class Table : Window
     {

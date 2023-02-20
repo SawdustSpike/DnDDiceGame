@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DnDDiceGame
+namespace WpfApp1
 {
     public partial class MainWindow : Window
     {

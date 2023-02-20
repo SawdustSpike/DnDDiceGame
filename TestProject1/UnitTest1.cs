@@ -1,4 +1,4 @@
-using WpfApp1;
+using DnDDiceGame;
 
 namespace TestProject1
 

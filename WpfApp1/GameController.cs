@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Documents;
 
 
-namespace DnDDiceGame
+namespace WpfApp1
 {
     public class GameController
     {
