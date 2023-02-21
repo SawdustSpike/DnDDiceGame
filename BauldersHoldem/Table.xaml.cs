@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace BauldersHoldem
 {    
     public partial class Table : Window
     {
@@ -213,21 +213,21 @@ namespace WpfApp1
             UpdatePot();
             UpdatePlayers();
             RiverButton();
-        }        
+        }
         private void UpdatePlayers()
         {
             //shows current gold amount, as well as fades the image of players who folded
             if (PlayerController.p1) TopText.Text = PlayerController.RetrievePlayer(1).Name + " " + PlayerController.RetrievePlayer(1).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(1).Name + "'s Dice";
-            else { if (Top_Player.Visibility == Visibility.Visible) Top_Player.Opacity = .25; TopText.Text = $"{PlayerController.RetrievePlayer(1)} Folded"; }
+            else { if (Top_Player.Visibility == Visibility.Visible) {Top_Player.Opacity = .25; TopText.Text = $"{PlayerController.RetrievePlayer(1).Name} Folded"; } }
 
             if (PlayerController.p2) RightText.Text = PlayerController.RetrievePlayer(2).Name + " " + PlayerController.RetrievePlayer(2).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(2).Name + "'s Dice";
-            else { if (Right_Player.Visibility == Visibility.Visible) Right_Player.Opacity = .25; RightText.Text = $"{PlayerController.RetrievePlayer(2).Name} Folded"; }
+            else { if (Right_Player.Visibility == Visibility.Visible) { Right_Player.Opacity = .25; RightText.Text = $"{PlayerController.RetrievePlayer(2).Name} Folded"; } }
 
             if (PlayerController.p3) BottomText.Text = PlayerController.RetrievePlayer(3).Name + " " + PlayerController.RetrievePlayer(3).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(3).Name + "'s Dice";
-            else { if (Bottom_Player.Visibility == Visibility.Visible) Bottom_Player.Opacity = .25; BottomText.Text = $"{PlayerController.RetrievePlayer(3).Name} Folded"; }
+            else { if (Bottom_Player.Visibility == Visibility.Visible) { Bottom_Player.Opacity = .25; BottomText.Text = $"{PlayerController.RetrievePlayer(3).Name} Folded"; } }
 
             if (PlayerController.p4) LeftText.Text = PlayerController.RetrievePlayer(4).Name + " " + PlayerController.RetrievePlayer(4).Gold + " Gold" + Environment.NewLine + "Click here to see " + PlayerController.RetrievePlayer(4).Name + "'s Dice";
-            else { if (Left_Player.Visibility == Visibility.Visible) Left_Player.Opacity = .25; LeftText.Text = $"{PlayerController.RetrievePlayer(4).Name} Folded"; }
+            else { if (Left_Player.Visibility == Visibility.Visible) { Left_Player.Opacity = .25; LeftText.Text = $"{PlayerController.RetrievePlayer(4).Name} Folded"; } }
 
            
         }

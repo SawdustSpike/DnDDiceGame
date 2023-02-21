@@ -126,9 +126,6 @@
     <Resource Include="Images\interior-old-tavern-empty-tables-207571453.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Things-to-fix.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="interior-old-tavern-empty-tables-207571453.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +142,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="TopPlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="ViewModel\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,14 +1,14 @@
-﻿<Window x:Class="WpfApp1.MainWindow"         
+﻿<Window x:Class="BauldersHoldem.MainWindow"         
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:local="clr-namespace:BauldersHoldem"
         mc:Ignorable="d"
         Title="The Tavern" Height="450" Width="800" WindowState="Maximized">
     <Grid x:Name="TopText">
         <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="C:\Users\spike\source\repos\WpfApp1\WpfApp1\Images\interior-old-tavern-empty-tables-207571453.jpg" AlignmentY="Top" AlignmentX="Center"/>
+            <ImageBrush Stretch="Fill" ImageSource="C:\Users\spike\source\repos\BauldersHoldem\BauldersHoldem\Images\interior-old-tavern-empty-tables-207571453.jpg" AlignmentY="Top" AlignmentX="Center"/>
         </Grid.Background>
         
         <Button Name ="Top_Player" Click =" Top_RollDice" HorizontalAlignment="Center" VerticalAlignment="Top">            

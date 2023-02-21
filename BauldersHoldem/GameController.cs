@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Documents;
 
 
-namespace WpfApp1
+namespace BauldersHoldem
 {
     public class GameController
     {

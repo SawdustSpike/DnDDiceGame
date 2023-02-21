@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
 
-namespace WpfApp1
+namespace BauldersHoldem
 {
     public class InputBox
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.TextFormatting;
 
-namespace WpfApp1
+namespace BauldersHoldem
 {
     public class PlayerController
     {
@@ -18,15 +18,15 @@ namespace WpfApp1
         public static void CheckinPlay()
         {
             //my solution to dealing with players that folded. It's a bit redundant with the "p1-p4" ways of telling how many players are still able to play, might clean up later
-            int seeinPlay = 0;
-            foreach (Player player in Player.players)
-            {
-                if (player.Folded == false)
-                {
-                    seeinPlay++;
-                }
-            }
-            inPlay = seeinPlay;
+            inPlay = Player.players.Where(x => x.Folded = false).Count();    
+            //foreach (Player player in Player.players)
+            //{
+            //    if (player.Folded == false)
+            //    {
+            //        seeinPlay++;
+            //    }
+            //}
+            //inPlay = seeinPlay;
         }
         public static Player CreatePlayer(string name, int gold) 
         { 
@@ -49,7 +49,7 @@ namespace WpfApp1
         public static Player RetrievePlayer(int playerId)
         {
             //simple reusable code to find individual players from the players array.
-            return Player.players.Where(s => s.Number== playerId).FirstOrDefault();
+            return Player.players.FirstOrDefault(s => s.Number == playerId);
         }        
     }
 }
