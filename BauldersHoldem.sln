@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\..\..\Downloads\TopPlayer.png = ..\..\..\Downloads\TopPlayer.png
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject2", "TestProject2\TestProject2.csproj", "{B09556D9-A238-4780-B876-0F78F652FDEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{B7D28C6C-2E35-4F29-BAEC-D987B24446D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7D28C6C-2E35-4F29-BAEC-D987B24446D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7D28C6C-2E35-4F29-BAEC-D987B24446D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B09556D9-A238-4780-B876-0F78F652FDEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B09556D9-A238-4780-B876-0F78F652FDEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B09556D9-A238-4780-B876-0F78F652FDEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B09556D9-A238-4780-B876-0F78F652FDEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

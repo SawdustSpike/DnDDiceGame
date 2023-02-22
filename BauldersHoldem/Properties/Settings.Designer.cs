@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BauldersHoldem.Properties {
+namespace BaulderHoldem.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

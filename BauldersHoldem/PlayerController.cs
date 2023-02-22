@@ -18,7 +18,7 @@ namespace BauldersHoldem
         public static void CheckinPlay()
         {
             //my solution to dealing with players that folded. It's a bit redundant with the "p1-p4" ways of telling how many players are still able to play, might clean up later
-            inPlay = Player.players.Where(x => x.Folded = false).Count();    
+            inPlay = Player.players.Where(x => x.Folded == false).Count();    
             //foreach (Player player in Player.players)
             //{
             //    if (player.Folded == false)

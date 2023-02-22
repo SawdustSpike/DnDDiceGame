@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BaulderHoldem.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -36,147 +37,180 @@ namespace BauldersHoldem
                 }
             }
         }
-        public static void BestFive(Player player)
+        public static void BestFive(Player player, List<int> commDice)
         {
             var allSeven = new List<int>()
             { player.Dice[0], player.Dice[1], commDice[0], commDice[1], commDice[2], commDice[3], commDice[4]};
             allSeven.Sort();
-            
-            //finds the best five dice out of the seven available, saves them in the players BestFive atribute and also give player scores(starting with numbers for ranking sake)
-            //Considering chopping this one up into more methods since it's SO big
-            if (allSeven.Contains(2) && allSeven.Contains(3) && allSeven.Contains(4) && allSeven.Contains(5) && allSeven.Contains(6)) { player.BestFive = new int[] { 2, 3, 4, 5, 6 }; player.Score = "3Straight"; return; }
-            else if (allSeven.Contains(1) && allSeven.Contains(2) && allSeven.Contains(3) && allSeven.Contains(4) && allSeven.Contains(5)) { player.BestFive = new int[] { 1, 2, 3, 4, 5 }; player.Score = "3Straight"; return; }
-
-            var res = new Dictionary<int, int>();
+            var diceDic = new Dictionary<int, int>();
             for (int i = 0; i < 7; i++)
             {
-                if (res.ContainsKey(allSeven[i]))
+                if (diceDic.ContainsKey(allSeven[i]))
                 {
-                    res[allSeven[i]]++;
+                    diceDic[allSeven[i]]++;
                 }
                 else
                 {
-                    res.Add(allSeven[i], 1);
+                    diceDic.Add(allSeven[i], 1);
                 }
             }
-            if (res.ContainsValue(5))
-            {
-                var x = res.FirstOrDefault(y => y.Value == 5).Key;
-                player.BestFive = new int[] { x, x, x, x, x };
-                player.Score = "1Five Of A Kind";
-                return;
-            }
-            else if (res.ContainsValue(4))
-            {
-                var x = res.FirstOrDefault(a => a.Value == 4).Key;
-                var y = new int[5] { 0, x, x, x, x, };
-                for (int i = 6; i >= 0; i--)
-                {
-                    if (!y.Contains(allSeven[i]))
-                    {
-                        y[0] = allSeven[i];
-                        player.BestFive = y;
-                        player.Score = "2 Four Of A Kind";
-                        return;
+            if (BestFiveController.IsFiveOfAKind(player, diceDic)) return;
+            else if (BestFiveController.IsFourOfAKind(player, diceDic, allSeven)) return;
+            else if (BestFiveController.IsStraight(player, diceDic)) return;
+            else if (BestFiveController.IsFullHouse(player, diceDic)) return;
+            else if (BestFiveController.IsThreeOfAKind(player, diceDic, allSeven)) return;
+            else if (BestFiveController.IsTwoPair(player, diceDic, allSeven)) return;
+            else throw new Exception("Best Five Failed");
 
-                    }
-                }
-            }
-            else if (res.ContainsValue(3) && res.ContainsValue(2))
-            {
-                var x = res.FirstOrDefault(a => a.Value == 3).Key;
-                var y = new int[5] { 0, 0, x, x, x };
-                var z = new List<int>();
-                foreach (var kvp in res)
-                {
-                    if (kvp.Value == 2)
-                    {
-                        z.Add(kvp.Key);
-                    }
-                }
-                z.Sort();
 
-                y[0] = z[z.Count() - 1];
-                y[1] = z[z.Count() - 1];
-                player.BestFive = y;
-                player.Score = "4Full House";
-                return;
-            }
+            //finds the best five dice out of the seven available, saves them in the players BestFive atribute and also give player scores(starting with numbers for ranking sake)
+            //Considering chopping this one up into more methods since it's SO big
+            //if (allSeven.Contains(2) && allSeven.Contains(3) && allSeven.Contains(4) && allSeven.Contains(5) && allSeven.Contains(6)) { player.BestFive = new int[] { 2, 3, 4, 5, 6 }; player.Score = "3Straight"; return; }
+            //else if (allSeven.Contains(1) && allSeven.Contains(2) && allSeven.Contains(3) && allSeven.Contains(4) && allSeven.Contains(5)) { player.BestFive = new int[] { 1, 2, 3, 4, 5 }; player.Score = "3Straight"; return; }
 
-            else if (res.ContainsValue(3))
-            {
-                var z = new List<int>();
-                foreach (var kvp in res)
-                {
-                    if (kvp.Value == 3)
-                    {
-                        z.Add(kvp.Key);
-                    }
-                }
-                z.Sort();
-                var y = new int[5];
-                y[4] = z[z.Count() - 1];
-                y[3] = z[z.Count() - 1];
-                y[2] = z[z.Count() - 1];
-                int x = 1;
-                for (int i = 6; i >= 0; i--)
-                {
-                    if (!y.Contains(allSeven[i]))
-                    {
-                        y[x] = allSeven[i];
-                        x--;
-                        if (x < 0)
-                        {
-                            player.BestFive = y;
-                            player.Score = "5Three Of A Kind";
-                            return;
-                        }
+            
+            
+            //if (diceDic.ContainsValue(5))
+            //{
+            //    var x = diceDic.FirstOrDefault(y => y.Value == 5).Key;
+            //    player.BestFive = new int[] { x, x, x, x, x };
+            //    player.Score = "1Five Of A Kind";
+            //    return;
+            //}
+            //else if (diceDic.ContainsValue(4))
+            //{
+            //    var x = diceDic.FirstOrDefault(a => a.Value == 4).Key;
+            //    var y = new int[5] { 0, x, x, x, x, };
+            //    for (int i = 6; i >= 0; i--)
+            //    {
+            //        if (!y.Contains(allSeven[i]))
+            //        {
+            //            y[0] = allSeven[i];
+            //            player.BestFive = y;
+            //            player.Score = "2 Four Of A Kind";
+            //            return;
 
-                    }
-                }
-            }
-            else if (res.ContainsValue(2))
-            {
-                var z = new List<int>();
-                foreach (var kvp in res)
-                {
-                    if (kvp.Value == 2)
-                    {
-                        z.Add(kvp.Key);
-                    }
-                }
-                var y = new int[5];
-                y[4] = z[z.Count() - 1];
-                y[3] = z[z.Count() - 1];
-                if (z.Count > 1)
-                {
-                    y[2] = z[z.Count - 2];
-                    player.BestFive = y;
-                    player.Score = "6Two Pair";
-                    return;
-                }
-                else
-                {
-                    var co = 2;
-                    for (int i = 6; i >= 0; i--)
-                    {
-                        if (!y.Contains(allSeven[i]))
-                        {
-                            y[co] = allSeven[i];
-                            co--;
-                            if (co < 0)
-                            {
-                                player.BestFive = y;
-                                player.Score = "6Two Pair";
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            player.BestFive = new int[5];
-            player.Score = "6Two Pair";
-            return;
+            //        }
+            //    }
+            //}
+            //else if (diceDic.ContainsValue(3) && diceDic.ContainsValue(2))
+            //{
+            //    var x = diceDic.FirstOrDefault(a => a.Value == 3).Key;
+            //    var y = new int[5] { 0, 0, x, x, x };
+            //    var z = new List<int>();
+            //    foreach (var kvp in diceDic)
+            //    {
+            //        if (kvp.Value == 2)
+            //        {
+            //            z.Add(kvp.Key);
+            //        }
+            //    }
+            //    z.Sort();
+
+            //    y[0] = z[z.Count() - 1];
+            //    y[1] = z[z.Count() - 1];
+            //    player.BestFive = y;
+            //    player.Score = "4Full House";
+            //    return;
+            //}
+
+            //else if (diceDic.ContainsValue(3))
+            //{
+            //    var z = new List<int>();
+            //    foreach (var kvp in diceDic)
+            //    {
+            //        if (kvp.Value == 3)
+            //        {
+            //            z.Add(kvp.Key);
+            //        }
+            //    }
+            //    z.Sort();
+            //    var y = new int[5];
+            //    y[4] = z[z.Count() - 1];
+            //    y[3] = z[z.Count() - 1];
+            //    y[2] = z[z.Count() - 1];
+            //    int x = 1;
+            //    for (int i = 6; i >= 0; i--)
+            //    {
+            //        if (!y.Contains(allSeven[i]))
+            //        {
+            //            y[x] = allSeven[i];
+            //            x--;
+            //            if (x < 0)
+            //            {
+            //                player.BestFive = y;
+            //                player.Score = "5Three Of A Kind";
+            //                return;
+            //            }
+
+            //        }
+            //    }
+            //}
+            //else /*if (diceDic.ContainsValue(2))*/
+            //{
+            //    var twoPairs = new List<int>();
+            //    foreach (var kvp in diceDic)
+            //    {
+            //        if (kvp.Value == 2)
+            //        {
+            //            twoPairs.Add(kvp.Key);
+            //        }
+            //    }
+            //    twoPairs.Sort();
+            //    var y = new int[5];
+            //    y[4] = twoPairs[twoPairs.Count - 1];
+            //    y[3] = twoPairs[twoPairs.Count - 1];
+            //    y[2] = twoPairs[twoPairs.Count - 2];
+            //    y[1] = twoPairs[twoPairs.Count - 2];               
+            //    for (int i = 6; i >= 0; i--)
+            //    {
+            //        if (!y.Contains(allSeven[i]))
+            //        {
+            //            y[0] = allSeven[i];
+            //            player.BestFive = y;
+            //            player.Score = "6Two Pair";
+            //            return;
+                        
+            //        }
+            //    }
+
+
+
+
+
+                // Old Code --------\/
+
+
+
+                //if (twoPairs.Count > 1)
+                //{
+                //    y[2] = twoPairs[twoPairs.Count - 2];
+                //    player.BestFive = y;
+                //    player.Score = "6Two Pair";
+                //    return;
+                //}
+                //else
+                //{
+                //    var co = 2;
+                //    for (int i = 6; i >= 0; i--)
+                //    {
+                //        if (!y.Contains(allSeven[i]))
+                //        {
+                //            y[co] = allSeven[i];
+                //            co--;
+                //            if (co < 0)
+                //            {
+                //                player.BestFive = y;
+                //                player.Score = "6Two Pair";
+                //                return;
+                //}
+                //        }
+                //    }
+                //}
+            //}
+            //player.BestFive = new int[5];
+            //player.Score = "6Two Pair";
+            //return;
 
         }
         public static int BetGetter(Player player)
