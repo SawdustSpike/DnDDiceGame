@@ -240,7 +240,7 @@ namespace BauldersHoldem
             List<Player> inPlay = Player.players.Where(x => x.Folded == false).ToList();
             foreach (var player in inPlay)
             {                
-                BestFive(player);                               
+                BestFive(player, commDice);                               
             }
 
             List<Player> winners = inPlay.OrderBy(o => o.Score).ThenByDescending(o => o.BestFive[4]).ThenByDescending(o => o.BestFive[3]).ThenByDescending(o => o.BestFive[2]).ThenByDescending(o => o.BestFive[1]).ThenByDescending(o => o.BestFive[0]).ToList();
